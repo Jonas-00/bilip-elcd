@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bi-Lipschitz Contracting Dynamics</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #fafafa;
+      color: #222;
+      line-height: 1.7;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 48px 20px 36px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      max-width: 800px;
+      margin: 0 auto 20px;
+      line-height: 1.3;
+    }
+
+    .authors {
+      font-size: 1rem;
+      color: #444;
+      margin-bottom: 6px;
+    }
+
+    .affiliation {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 24px;
+    }
+
+    .equal {
+      font-size: 0.8rem;
+      color: #999;
+      margin-bottom: 24px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 22px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      font-family: 'Arial', sans-serif;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover { opacity: 0.8; }
+
+    .btn-primary { background: #1565C0; color: #fff; }
+    .btn-secondary { background: #f0f0f0; color: #333; border: 1px solid #ccc; }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    section { margin-bottom: 48px; }
+
+    h2 {
+      font-size: 1.3rem;
+      font-weight: bold;
+      border-bottom: 2px solid #1565C0;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    p { margin-bottom: 12px; }
+
+    .teaser {
+      text-align: center;
+      margin: 32px 0;
+    }
+
+    .teaser img {
+      max-width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .teaser-caption {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    .figures-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-top: 16px;
+    }
+
+    .figure-item { text-align: center; }
+
+    .figure-item img {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .figure-item p {
+      font-size: 0.82rem;
+      color: #666;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    .abstract-box {
+      background: #fff;
+      border-left: 4px solid #1565C0;
+      padding: 20px 24px;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.95rem;
+    }
+
+    .keywords {
+      font-size: 0.85rem;
+      color: #555;
+      margin-top: 12px;
+    }
+
+    .keywords span {
+      font-weight: bold;
+      color: #333;
+    }
+
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 16px;
+      font-size: 0.82rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.8rem;
+      color: #999;
+      border-top: 1px solid #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Bi-Lipschitz Contracting Dynamics:<br>
+      A Stable, Invertible, and Re-shapeable<br>
+      Learned System in Continuous Time</h1>
+
+  <p class="authors">
+    Jonas Ulmen&nbsp;&nbsp;·&nbsp;&nbsp;
+    Jonas Landeck&nbsp;&nbsp;·&nbsp;&nbsp;
+    Ganesh Sundaram&nbsp;&nbsp;·&nbsp;&nbsp;
+    Ernesto Dickel Saraiva&nbsp;&nbsp;·&nbsp;&nbsp;
+    Daniel Görges
+  </p>
+
+  <p class="affiliation">
+    Department of Electrical and Computer Engineering,
+    RPTU University Kaiserslautern-Landau, Germany
+  </p>
+
+  <p class="equal">* Equal contribution</p>
+
+  <div class="buttons">
+    <a class="btn btn-primary" href="paper.pdf">📄 Paper (PDF)</a>
+    <a class="btn btn-secondary" href="https://github.com/DEINUSERNAME/elcd-paper">💻 Code</a>
+  </div>
+</header>
+
+<main>
+
+  <div class="teaser">
+    <img src="figures/teaser.png" alt="Teaser figure">
+    <p class="teaser-caption">
+      Bi-Lipschitz CT-ELCD on the Sine skill (CT+encoder). Orange: demonstrated trajectory.
+      Blue dashed: model rollout. Red dashed: time-inverted rollout retracing the forward path.
+      Background: learned vector field.
+    </p>
+  </div>
+
+  <section>
+    <h2>Abstract</h2>
+    <div class="abstract-box">
+      <p>
+        We study a learned continuous-time dynamical system whose symmetric-Jacobian eigenvalues
+        are held inside a two-sided band by construction. The upper end of the band makes the system
+        contracting, so trajectories converge to one another and the system is stable; the lower end
+        keeps the backward expansion at rate &lambda;<sub>max</sub>, making exact time inversion
+        numerically safe. A free skew-symmetric term adds rotation — the curved, non-monotone
+        component real trajectories require — without disturbing the contraction rate.
+      </p>
+      <p>
+        Fixing the whole eigenvalue spectrum inside an explicit, editable band endows the system
+        with a set of properties we establish as theorems: stability and convergence to a unique
+        equilibrium; exact time inversion: integrating the negated field runs the system backward
+        at rate &lambda;<sub>max</sub>; and post-hoc spectral reshaping that retimes behaviour
+        with a bounded, predictable deviation.
+      </p>
+      <p>
+        On the LASA handwriting benchmark the system fits demonstrated skills, contracts to the
+        goal from arbitrary starts, and replays backward with near-solver-precision error, at
+        accuracy comparable to contractive-imitation baselines that offer neither retiming nor
+        exact inversion.
+      </p>
+      <div class="keywords">
+        <span>Index Terms:</span>
+        contracting dynamics, bi-Lipschitz, imitation learning,
+        time inversion, contraction theory, stable dynamical systems
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Key Properties</h2>
+    <ul style="padding-left:20px; font-size:0.95rem;">
+      <li style="margin-bottom:8px"><strong>Stable &amp; convergent</strong> — every trajectory converges to a unique equilibrium at rate &lambda;<sub>min</sub>.</li>
+      <li style="margin-bottom:8px"><strong>Exactly invertible</strong> — integrating the negated field retraces the forward path at rate &lambda;<sub>max</sub>, with near-solver-precision error.</li>
+      <li style="margin-bottom:8px"><strong>Re-shapeable post-hoc</strong> — clipping the eigenvalue band retimes a trained skill without retraining, with a bounded trajectory deviation.</li>
+      <li style="margin-bottom:8px"><strong>Pairwise contraction</strong> — BiLip-MLP generators certify &lambda;<sub>min</sub> &minus; sR and a positive injectivity margin for the full Jacobian.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Results</h2>
+    <div class="figures-grid">
+      <div class="figure-item">
+        <img src="figures/e1_sshape.png" alt="Sshape skill">
+        <p>E1 — Skill imitation on Sshape. Rollout from demonstration start and grid of off-path starts, all contracting to the goal.</p>
+      </div>
+      <div class="figure-item">
+        <img src="figures/e3_backward.png" alt="Time inversion">
+        <p>E2 — Time inversion. The reverse rollout (red) retraces the forward trajectory (blue) with near-solver-precision error.</p>
+      </div>
+      <div class="figure-item">
+        <img src="figures/e4_skew.png" alt="Skew study">
+        <p>E3 — Skew study. The contraction rate &lambda;<sub>min</sub> is flat across all skew gains; K controls path shape independently.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>BibTeX</h2>
+    <pre>@article{ulmen2025bilipschitz,
+  title   = {Bi-Lipschitz Contracting Dynamics: A Stable, Invertible,
+             and Re-shapeable Learned System in Continuous Time},
+  author  = {Ulmen, Jonas and Landeck, Jonas and Sundaram, Ganesh and
+             Saraiva, Ernesto Dickel and G{\"o}rges, Daniel},
+  year    = {2025}
+}</pre>
+  </section>
+
+</main>
+
+<footer>
+  RPTU University Kaiserslautern-Landau &nbsp;·&nbsp; 2025
+</footer>
+
+</body>
+</html>
