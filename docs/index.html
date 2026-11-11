@@ -197,7 +197,7 @@
 <main>
 
   <div class="teaser">
-    <img src="figures/teaser.png" alt="Teaser figure">
+    <img src="figures/teaser_Sine_seed1.svg" alt="Teaser figure">
     <p class="teaser-caption">
       Bi-Lipschitz CT-ELCD on the Sine skill (CT+encoder). Orange: demonstrated trajectory.
       Blue dashed: model rollout. Red dashed: time-inverted rollout retracing the forward path.
@@ -251,15 +251,15 @@
     <h2>Results</h2>
     <div class="figures-grid">
       <div class="figure-item">
-        <img src="figures/e1_sshape.png" alt="Sshape skill">
+        <img src="figures/e1_enc_Sshape.svg" alt="Sshape skill">
         <p>E1 — Skill imitation on Sshape. Rollout from demonstration start and grid of off-path starts, all contracting to the goal.</p>
       </div>
       <div class="figure-item">
-        <img src="figures/e3_backward.png" alt="Time inversion">
+        <img src="figures/e3_backward_sshape.svg" alt="Time inversion">
         <p>E2 — Time inversion. The reverse rollout (red) retraces the forward trajectory (blue) with near-solver-precision error.</p>
       </div>
       <div class="figure-item">
-        <img src="figures/e4_skew.png" alt="Skew study">
+        <img src="figures/e4_skew_rollouts.svg" alt="Skew study">
         <p>E3 — Skew study. The contraction rate &lambda;<sub>min</sub> is flat across all skew gains; K controls path shape independently.</p>
       </div>
     </div>
