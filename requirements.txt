@@ -1,0 +1,7 @@
+torch>=2.5.1
+numpy>=2.2.0
+scipy>=1.18.1
+matplotlib>=3.10.0
+einops>=0.8.0
+tikzplotlib>=0.10.1
+pyLasaDataset
